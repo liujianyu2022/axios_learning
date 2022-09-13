@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.27.2/axios.min.js"></script>
+</head>
+
+<body>
+    <button id="one">get shop list one</button>
+    <button id="two">get shop list two</button>
+    <button id="cancel">cancel the request</button>
+
+    <script>
+        let btnOne = document.getElementById("one")
+        let btnTwo = document.getElementById("two")
+        let btnCancel = document.getElementById("cancel")
+
+        axios.defaults.baseURL = "http://localhost:4000"
+
+        let CancelToken = axios.CancelToken
+        let cancel = null
+
+        btnOne.onclick = function () {
+            if (cancel != null) cancel()                //准备发本次请求之前，取消前面的请求
+
+            axios({
+                method: "GET",
+                url: "/products1",
+                cancelToken: new CancelToken(function (c) {       //c相当于请求取消的函数
+                    cancel = c      //把取消函数交出去
+                })
+            })
+            .then(
+                response => {
+                    cancel = null
+                    console.log(response)
+                },
+                error => {
+                    if (axios.isCancel(error)) {      //由于取消请求而导致的出错，此时的typeof error = "Cancel"， 是Cancel类型的对象
+
+                    } else {      //请求出错了
+                        cancel = null
+                    }
+                }
+            )
+        }
+
+
+
+        btnTwo.onclick = function () {
+            if (cancel != null) cancel()
+
+            axios.get("/products2", {
+                cancelToken: new CancelToken(function (c) {       //c相当于请求取消的函数
+                    cancel = c      //把取消函数交出去
+                })
+            })
+            .then(
+                response => {
+                    cancel = null
+                    console.log(response)
+                },
+                error => {
+                    if (axios.isCancel(error)) {      //由于取消请求而导致的出错，此时的typeof error = "Cancel"， 是Cancel类型的对象
+
+                    } else {      //请求出错了
+                        cancel = null
+                    }
+                }
+            )
+        }
+
+        btnCancel.onclick = function () {
+            console.log("cancel")
+            cancel()
+        }
+    </script>
+</body>
+
+</html>

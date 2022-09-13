@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+
+    <body>
+        <button id="get">点击获取get请求</button>
+        <button id="post">点击获取post请求</button>
+        <button id="put">点击获取put请求</button>
+        <button id="delete">点击获取delete请求</button>
+
+        <script>
+            function myAxios({url, method="GET", parameters={}, data={}}){
+
+                return new Promise(function(resolve, reject){
+
+                    let queryStr = ""       //加上query参数
+                    Object.keys(parameters).forEach(function(key, index){
+                        queryStr += `${key}=${parameters[key]}&`      //把query参数添加到url中
+                    })
+                    if(queryStr !== ""){        // xxx?k1=v1&k2=v2
+                        queryStr = queryStr.substring(0, queryStr.length - 1)
+                        url += "?" + queryStr
+                    } 
+
+                    let xhr = new XMLHttpRequest()          //创建xhr对象
+
+                    xhr.open(method, url, true)     //打开连接，初始化请求，但是没有发送请求
+
+
+                    xhr.onreadystatechange = function(){
+
+                        if(xhr.readyState == 4){        //这是判断请求是否完成
+                            if((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304){       //请求是否成功
+         
+                                let obj = {     //把json格式的数据自动转为js对象
+                                    data: JSON.parse(xhr.response,),
+                                    status: xhr.status,
+                                    statusText: xhr.statusText
+                                }
+                                resolve(obj)
+
+                            }else{
+                                reject(Error(`error status is ${xhr.status}`))
+                            }
+                        }
+                    } 
+
+
+                    if(method == "GET" || method == "DELETE"){        //发送请求, send是异步的，网络请求
+                        xhr.send(null)      //get请求没有参数
+                    }else if(method == "POST" || method == "PUT"){
+                        xhr.setRequestHeader("Content-Type", "application/json;chartset=utf-8")  //告诉服务器请求体的格式是json格式
+                        xhr.send(JSON.stringify(data))          //发送json格式数据， 必须加上上面的请求头
+                    }
+    
+                })
+
+            }
+
+            let btn1 = document.getElementById("get")
+            let btn2 = document.getElementById("post")
+            let btn3 = document.getElementById("put")
+            let btn4 = document.getElementById("delete")
+
+            btn1.onclick = function(){
+                myAxios({
+                    url:"http://localhost:3000/posts",
+                    method:"GET",
+                    parameters:{
+                        id:1
+                    }
+                })
+                .then(
+                    response => {
+                        console.log(response)
+                    },
+                    error => {
+                        console.log(error)
+                    }
+                )
+            }
+
+            btn2.onclick = function(){
+                myAxios({
+                    url:"http://localhost:3000/posts",
+                    method:"POST",
+                    data:{
+                        "title--------------": "json-server",
+                        "author-------------": "typicode"
+                    }
+                })
+                .then(
+                    response => {
+                        console.log(response)
+                    },
+                    error => {
+                        console.log(error)
+                    }
+                )
+            }
+
+            btn3.onclick = function(){
+                myAxios({
+                    url:"http://localhost:3000/posts/1",
+                    method:"put",       //put请求传输请求体参数
+                    data:{
+                        "title+++++++++": "json-server",
+                        "author++++++++": "typicode"
+                    }
+                })
+                .then(
+                    response => {
+                        console.log(response)
+                    },
+                    error => {
+                        console.log(error)
+                    }
+                )
+            }
+
+
+        </script>
+    </body>
+</html>

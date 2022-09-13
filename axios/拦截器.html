@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.27.2/axios.min.js"></script>
+    </head>
+    <body>
+        <button id="get">点击获取get请求</button>
+        <button id="post">点击获取post请求</button>
+        <button id="put">点击获取put请求</button>
+        <button id="delete">点击获取delete请求</button>
+
+        <script>
+            let btnGet = document.getElementById("get")
+            let btnPost = document.getElementById("post")
+            let btnPut = document.getElementById("put")
+            let btnDelete = document.getElementById("delete")
+
+            //拦截器就是回调函数
+            axios.interceptors.request.use(
+                config => {
+
+                    return config       //
+                },
+                error => {
+
+                    return Promise.reject(error)
+                }
+            )
+
+            axios.interceptors.response.use(
+                response => {
+
+                    return response
+                },
+                error => {
+
+                    return Promise.reject(error)
+                }
+            )
+
+            baseURL="http://localhost:3000"
+            btnGet.onclick = function(){
+                axios({
+                    method:"GET",
+                    url:"/posts"
+                })
+                .then(
+                    response => {
+                        console.log(response)
+                    },
+                    error=>{
+                        console.log(error)
+                    }
+                )
+            }
+        </script>
+    </body>
+</html>

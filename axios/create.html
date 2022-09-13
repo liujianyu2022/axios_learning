@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.27.2/axios.min.js"></script>
+    </head>
+
+    <body>
+        
+        <button id="get">点击获取get请求</button>
+        <button id="post">点击获取post请求</button>
+        <button id="put">点击获取put请求</button>
+        <button id="delete">点击获取delete请求</button>
+
+        <script>
+            console.log(axios)
+
+            let btnGet = document.getElementById("get")
+            let btnPost = document.getElementById("post")
+            let btnPut = document.getElementById("put")
+            let btnDelete = document.getElementById("delete")
+
+            let instance = axios.create({       //axios.create({})      返回一个axios的实列
+                baseURL:"http://localhost:3000"        //指定baseURL
+            })
+            
+            
+            
+            btnGet.onclick = function(){
+                instance({
+                    url:"/posts"
+                })
+                .then(
+                    response => {
+                        console.log(response)
+                    },
+                    error => {
+                        console.log(error)
+                    }
+                )
+            }
+        </script>
+    </body>
+</html>

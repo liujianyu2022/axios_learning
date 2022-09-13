@@ -1,0 +1,13 @@
+{
+  "posts": [
+    {
+      "title": "nice weather",
+      "author": "liu",
+      "id": 1
+    }
+  ],
+  "comments": [],
+  "profile": {
+    "name": "typicode"
+  }
+}

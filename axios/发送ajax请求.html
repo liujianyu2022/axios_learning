@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.27.2/axios.min.js"></script>
+    </head>
+    <body>
+        <button id="get">点击获取get请求</button>
+        <button id="post">点击获取post请求</button>
+        <button id="put">点击获取put请求</button>
+        <button id="delete">点击获取delete请求</button>
+
+        <script>
+            console.log(axios)
+
+            let btnGet = document.getElementById("get")
+            let btnPost = document.getElementById("post")
+            let btnPut = document.getElementById("put")
+            let btnDelete = document.getElementById("delete")
+
+            axios.defaults.baseURL = "http://localhost:3000"
+
+           
+            btnGet.onclick = function(){
+                axios({
+                    method: "GET",
+                    url:"posts/1"
+                })
+            }
+
+            btnPost.onclick = function(){
+                axios({
+                    method:"POSt",
+                    url:"/posts",
+                    data:{
+                        title:"nice weather",
+                        author:"liu"
+                    }
+                })
+                .then(
+                    response => {
+                        console.log(response)
+                    }
+                )
+            }
+
+            btnPut.onclick = function(){
+                axios({
+                    method:"PUT",
+                    url:"/posts/4",
+                    data:{
+                        title:"nice weather PUT",
+                        author:"liu"
+                    }
+                })
+                .then(
+                    response => {
+                        console.log(typeof response, response)
+                    }
+                )
+            }
+
+            btnDelete.onclick = function(){
+                axios({
+                    method:"DELETE",
+                    url:"posts/1"
+                })
+                .then(
+                    respone => {
+                        console.log("delete successfully")
+                    },
+                )
+            }
+        </script>
+    </body>
+</html>

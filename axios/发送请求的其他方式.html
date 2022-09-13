@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.27.2/axios.min.js"></script>
+    </head>
+    <body>
+        <button id="get">点击获取get请求</button>
+        <button id="post">点击获取post请求</button>
+        <button id="put">点击获取put请求</button>
+        <button id="delete">点击获取delete请求</button>
+
+        <script>
+            console.log(axios)
+
+            let btnGet = document.getElementById("get")
+            let btnPost = document.getElementById("post")
+            let btnPut = document.getElementById("put")
+            let btnDelete = document.getElementById("delete")
+
+            axios.defaults.baseURL = "http://localhost:3000"
+
+           
+            btnGet.onclick = function(){
+               axios.get("/posts")    //axios.get(url, [config])
+               .then(
+                    respone => {
+                        console.log("get successfully")
+                    }
+               )
+            }
+
+            btnPost.onclick = function(){
+                axios.post(         //axios.post(url, [date, config])
+                    "/posts",
+                    {
+                        title:"nice weather POST",
+                        author:"liu"
+                    }
+                )
+            }
+
+            btnPut.onclick = function(){
+                axios.put(
+                    "posts/6",
+                    {
+                        title:"nice weather PUT",
+                        author:"liu"
+                    }
+                )
+                .then(
+                    response => {
+                        console.log(typeof response, response)
+                    }
+                )
+            }
+
+            btnDelete.onclick = function(){
+                axios.delete(
+                    "posts/3"
+                )
+                .then(
+                    respone => {
+                        console.log("delete successfully")
+                    },
+                )
+            }
+        </script>
+    </body>
+</html>

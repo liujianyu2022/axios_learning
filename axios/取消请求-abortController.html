@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.27.2/axios.min.js"></script>
+    </head>
+
+    <body>
+        <button id="one">get shop list one</button>
+        <button id="two">get shop list two</button>
+        <button id="cancel">cancel the request</button>
+    
+        <script>
+            let btnOne = document.getElementById("one")
+            let btnTwo = document.getElementById("two")
+            let btnCancel = document.getElementById("cancel")
+    
+            axios.defaults.baseURL = "http://localhost:4000"
+    
+            let abortController = new AbortController()
+            let signal = abortController.signal
+
+            btnOne.onclick = function () {
+                axios.get("/products1", {
+                    signal: abortController.signal
+                })
+                .then(
+                    response => {
+                        console.log(response)
+                    },
+                    error => {
+                        console.log(error)
+                    }
+                )
+            }
+    
+    
+    
+            btnTwo.onclick = function () {
+                axios({
+                    method:"GET",
+                    url:"/products2",
+                    signal: abortController.signal
+                })
+                .then(
+                    response => {
+                        console.log(response)
+                    },
+                    error => {
+                        console.log(error)
+                    }
+                )
+            }
+    
+            btnCancel.onclick = function () {
+                abortController.abort()
+
+            }
+
+        </script>
+    </body>
+</html>
